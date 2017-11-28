@@ -1,55 +1,29 @@
-from flask import Flask, request
+from flask import Flask, request, redirect, render_template
+import cgi
+import os
 
 app = Flask(__name__)
-
 app.config['DEBUG'] = True
-signup_screen = """
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        .sign{
-            display:inline;
-        }
-    </style>
-</head>
-<body>
-    <h1>Signup</h1>
-    <form action= "/" method="post">
-        <table>
-            <tr>
-                <td><label for="username">Username  </label></td>
-
-                <td><input type="text" name="username"></td>
-            </tr>
-            <tr>
-                <td><label for="password">Password</label></td>
-
-                <td><input type="text" name="password"></td>
-            </tr>
-            <tr>
-                <td><label for="verifypassword">Verify Password</label></td>
-
-                <td><input type="text" name="verifypassword"></td>
-            </tr>
-            <tr>
-                <td><label for="email">Email (optional)</label></td>
-                
-                <td><input type="text" name="email"></td>    
-            </tr>
-        </table>
-        <input type="submit">
-    </div>
-
-    </form>
-</body>
-</html>
-"""
-
 
 @app.route("/")
 def index():
-    return signup_screen
+    
+    return render_template("base.html")
 
 
+
+@app.route("/validate", methods=["POST"])
+def validate():
+    username = request.form['username']
+    password = request.form['password']
+    verifypassword = request.form['verify']
+    email = request.form['email']
+
+    if len(password) > 2 and len(verifypassword) > 2:
+        if password == verifypassword:
+             return render_template("homepage.html", username=username)
+
+    return render_template("signup_form.html", username=username, password=password, verify=verifypassword, email=email)
+    
+    
 app.run()
