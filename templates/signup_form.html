@@ -17,8 +17,12 @@
                     <td><label for="username">Username</label></td>
                     <td>
                         <input name="username" value="{{username}}" type="text">
-                        {% if username|length == 0 %}
-                        <span class="error">That's not a valid username</span>
+                        {% if " " in username %}
+                        <span class="error">No spaces allowed</span>                                                
+                        {% elif username|length < 3 %}
+                        <span class="error">That's not a valid username</span>                        
+                        {% elif username|length > 20 %}
+                        <span class="error">Your username should be between 3-20 charaters</span>
                         {% endif %}
                     </td>
                 </tr>
@@ -26,16 +30,20 @@
                     <td><label for="password">Password</label></td>
                     <td>
                         <input name="password" type="password">
-                        {% if password|length < 2 %}
+                        {% if " " in password %}
+                        <span class="error">No spaces allowed</span>                        
+                        {% elif password|length < 3 %}
                         <span class="error">That's not a valid password</span>
+                        {% elif password|length > 20 %}
+                        <span class="error">Your password should be between 3-20 charaters</span>                        
                         {% endif %}
                     </td>
                 </tr>
                 <tr>
                     <td><label for="verify">Verify Password</label></td>
                     <td>
-                        <input name="verify" type="password">
-                        {% if verify|length < 2 %}
+                        <input name="verify" type="password"> 
+                        {% if verify != password %}
                         <span class="error">Passwords don't match</span>
                         {% endif %}
                     </td>
@@ -44,7 +52,14 @@
                     <td><label for="email">Email (optional)</label></td>
                     <td>
                         <input name="email" value="">
+                        {% if " " in email %}
+                        <span class="error">No spaces allowed</span>
+                        {% elif email|length < 3 %}
                         <span class="error">That's not a valid email</span>
+                        {% elif email|length > 20 %}
+                        <span class="error">That's not a valid email</span>
+
+                        {% endif %}
 
                     </td>
                 </tr>

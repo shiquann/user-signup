@@ -18,11 +18,18 @@ def validate():
     password = request.form['password']
     verifypassword = request.form['verify']
     email = request.form['email']
-
-    if len(password) > 2 and len(verifypassword) > 2:
-        if password == verifypassword:
-             return render_template("homepage.html", username=username)
-
+    emailnos= "@"
+    if len(password) > 3 and len(verifypassword) > 3:
+        if len(password) < 20 and len(verifypassword) < 20:
+            if password == verifypassword:
+                if emailnos in email:
+                    if " " in password:
+                        redirect("/validate")
+                    else:
+                        return render_template("homepage.html", username=username)
+                else:
+                    redirect("/validate")
+                
     return render_template("signup_form.html", username=username, password=password, verify=verifypassword, email=email)
     
     
